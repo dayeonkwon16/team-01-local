@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>태그별 후기 건수</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --series-1: #2a78d6;
+    --tip-bg: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --text-primary: #f0efec;
+      --text-secondary: #c3c2b7;
+      --text-muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --series-1: #3987e5;
+      --tip-bg: #252524;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5;
+    --tip-bg: #252524;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 16px;
+    background: var(--surface-1); color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 20px; line-height: 1.4; margin: 0 0 6px; font-weight: 650; }
+  .sub { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0 0 20px; }
+  .chart { position: relative; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .lbl { fill: var(--text-primary); font-size: 13px; }
+  .val { fill: var(--text-secondary); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .axis { fill: var(--text-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .bar { fill: var(--series-1); }
+  .row:hover .bar, .row:focus .bar { opacity: .85; }
+  .row:focus { outline: none; }
+  .row:focus .hit { stroke: var(--text-secondary); stroke-width: 1; }
+  .hit { fill: transparent; }
+  .tip {
+    position: absolute; pointer-events: none; opacity: 0; transition: opacity .1s;
+    background: var(--tip-bg); color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 10px; font-size: 12px; line-height: 1.5; max-width: 260px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+  .tip b { font-weight: 650; }
+  .tip .muted { color: var(--text-secondary); }
+  .note { font-size: 12px; line-height: 1.6; color: var(--text-secondary); margin: 16px 0 0; }
+  details { margin-top: 16px; font-size: 13px; }
+  summary { cursor: pointer; color: var(--text-secondary); }
+  table { border-collapse: collapse; margin-top: 8px; width: 100%; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--grid); }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>서면젊음의거리 카카오 후기는 '볼거리·분위기'(11건 중 5건)와 '붐빔'(4건) 이야기가 가장 많았다</h1>
+  <p class="sub">분모: 노이즈(공백·문장부호 뺀 10자 미만 2건)를 뺀 글 있는 후기 11건 · 한 후기에 태그 여러 개 가능 · 기간 2020.06.16. ~ 2025.10.02. · 출처: 카카오맵 '서면젊음의거리' 후기, 모은 날 2026-11-17</p>
+
+  <div class="chart" id="chart">
+    <div class="tip" id="tip" role="status" aria-live="polite"></div>
+  </div>
+
+  <p class="note">기준표(review-codebook.md, 태그 9개)에 맞지 않는 '새 태그 후보' 2건(연번 4, 11)은 막대에 넣지 않았습니다. 태그 근거 문장은 report/tagged.csv에 있습니다.</p>
+
+  <details>
+    <summary>표로 보기</summary>
+    <table id="tbl"><thead><tr><th>태그</th><th>후기 수</th><th>근거 연번</th></tr></thead><tbody></tbody></table>
+  </details>
+</div>
+
+<script>
+(() => {
+  const data = [
+    { tag: "볼거리·분위기", n: 5, ids: [1, 5, 7, 9, 10] },
+    { tag: "붐빔·방문객",   n: 4, ids: [2, 8, 10, 12] },
+    { tag: "청결·흡연",     n: 2, ids: [2, 7] },
+    { tag: "시간대",        n: 2, ids: [8, 10] },
+    { tag: "안전·교통",     n: 1, ids: [3] },
+    { tag: "술·유흥",       n: 1, ids: [8] },
+    { tag: "먹거리",        n: 1, ids: [10] },
+    { tag: "쇼핑",          n: 0, ids: [] },
+    { tag: "위치·접근성",   n: 0, ids: [] }
+  ];
+  const DEN = 11, MAX = 6;
+  const W = 720, labelW = 120, valW = 70, rowH = 34, barH = 20, top = 8, axisH = 24;
+  const plotW = W - labelW - valW;
+  const H = top + data.length * rowH + axisH;
+  const x = v => labelW + (v / MAX) * plotW;
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (n, a = {}, t) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (t != null) e.textContent = t; return e; };
+
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img",
+    "aria-label": "태그별 후기 건수 가로 막대 차트. " + data.map(d => `${d.tag} ${d.n}건`).join(", ") });
+
+  // 가는 세로 격자와 눈금 (0~6)
+  for (let v = 0; v <= MAX; v++) {
+    svg.appendChild(el("line", { x1: x(v), x2: x(v), y1: top, y2: top + data.length * rowH,
+      stroke: v === 0 ? "var(--baseline)" : "var(--grid)", "stroke-width": 1 }));
+    svg.appendChild(el("text", { x: x(v), y: H - 6, "text-anchor": "middle", class: "axis" }, v));
+  }
+
+  const chart = document.getElementById("chart"), tip = document.getElementById("tip");
+  data.forEach((d, i) => {
+    const y = top + i * rowH, cy = y + rowH / 2;
+    const g = el("g", { class: "row", tabindex: 0,
+      "aria-label": `${d.tag}: 11건 중 ${d.n}건` });
+    g.appendChild(el("rect", { class: "hit", x: 0, y, width: W, height: rowH }));
+    g.appendChild(el("text", { x: labelW - 10, y: cy, "text-anchor": "end", "dominant-baseline": "central", class: "lbl" }, d.tag));
+    if (d.n > 0) {
+      const x0 = x(0), x1 = x(d.n), r = 4, yb = cy - barH / 2;
+      // 기준선 쪽은 각지게, 끝은 4px 둥글게
+      g.appendChild(el("path", { class: "bar",
+        d: `M${x0},${yb} H${x1 - r} Q${x1},${yb} ${x1},${yb + r} V${yb + barH - r} Q${x1},${yb + barH} ${x1 - r},${yb + barH} H${x0} Z` }));
+    }
+    g.appendChild(el("text", { x: x(d.n) + 8, y: cy, "dominant-baseline": "central", class: "val" }, `${d.n}건`));
+
+    const show = (ev) => {
+      tip.innerHTML = `<b>${d.tag}</b><br>${DEN}건 중 ${d.n}건` +
+        `<br><span class="muted">근거 연번: ${d.ids.length ? d.ids.join(", ") : "없음"}</span>`;
+      const cr = chart.getBoundingClientRect();
+      let px, py;
+      if (ev && ev.clientX != null) { px = ev.clientX - cr.left + 12; py = ev.clientY - cr.top + 12; }
+      else { const br = g.getBoundingClientRect(); px = br.left - cr.left + labelW; py = br.bottom - cr.top + 4; }
+      px = Math.min(px, cr.width - 200);
+      tip.style.left = px + "px"; tip.style.top = py + "px"; tip.style.opacity = 1;
+    };
+    const hide = () => { tip.style.opacity = 0; };
+    g.addEventListener("mousemove", show); g.addEventListener("mouseleave", hide);
+    g.addEventListener("focus", () => show()); g.addEventListener("blur", hide);
+    svg.appendChild(g);
+  });
+  chart.appendChild(svg);
+
+  const tb = document.querySelector("#tbl tbody");
+  data.forEach(d => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${d.tag}</td><td class="n">${d.n}</td><td>${d.ids.join(", ") || "–"}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>
