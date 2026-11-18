@@ -21,3 +21,8 @@
 - 맨 위에 새로 들어온 강의 프롬프트 안내서 2개를 `prompts/`로 옮겼습니다(팀원 폴더도 같은 파일을 prompts/에 둠). 내용과 이름은 그대로입니다. 파일 개수 430개 → 430개(같음).
 - 10-team-report.md → prompts/10-team-report.md
 - 11-team-fieldwork-plan.md → prompts/11-team-fieldwork-plan.md
+
+## 2026-11-18 자막 자리 옮김
+
+- 영상 자막 자리를 `transcripts/`에서 `raw/video/`로 바꿨습니다(조유진 결정). `raw/`는 깃허브에 올라가지 않아 이 파일은 내 PC에만 남습니다. 빈 `transcripts/` 폴더는 지웠습니다.
+- transcripts/seomyeon-Ens.txt → raw/video/seomyeon-Ens.txt
