@@ -29,13 +29,14 @@
 
 ## 우리 팀(붐빔) 최종 프롬프트 · minsu · 2026-11-18
 
-- 팀장 metadata.csv가 나오면 [읽을 파일]에 그 경로를 더한 뒤 보냄
+- 2026-11-18: 내 metadata.csv 대신 팀 합본 `dayeon/archive/metadata-team.csv`(20줄: 유진 6·민수 8·다연 6)로 바꿈
 
 ```text
-아래 파일을 모두 읽고, 우리 팀의 지역 자산 인벤토리를 minsu 폴더에 inventory.csv로 만들어 줘.
+아래 파일을 모두 읽고, 우리 팀의 지역 자산 인벤토리를 minsu 폴더에 teamInventory.csv로 만들어 줘.
 
 [읽을 파일]
-- archive/metadata.csv (내 raw/ 파일 8개 목록). 근거 원문은 목록에 적힌 archive/files/ 파일에서 글자 그대로 옮겨.
+- ../dayeon/archive/metadata-team.csv (팀 합본 20줄). file 칸의 경로는 팀 폴더(../) 기준이야. 근거 원문은 그 파일에서 글자 그대로 옮겨. 내 컴퓨터에 없는 파일(다른 팀원의 archive/files/)은 원문을 짐작해 쓰지 말고, 아래 다른 파일에서 근거를 찾거나 '넣지 않은 것' 표에 '원본 없음'으로 적어.
+- ../dayeon/kakaomap.csv (다연 카카오맵 후기 6건 원문). 닉네임 칸은 옮기지 마.
 - 2026-11-18-카카오-별점-서면젊음의거리.csv, 2026-11-18-수집계획-서면젊음의거리-리뷰별점.md
 - llm-academy/inputs/서면젊음의거리_후기_2026-11-17.csv, team_reviews.csv, kakao-raw.txt, busan_commercial_highlights.csv, busan_markets.csv, busan_festivals.csv
 - llm-academy/research/ 노트 (전포·서면이 나오는 부분만)
