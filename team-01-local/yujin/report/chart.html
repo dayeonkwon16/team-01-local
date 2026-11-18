@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>리뷰 태그별 건수 · 전포카페거리·서면젊음의거리</title>
+<style>
+.viz-root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11,11,11,0.10);
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .viz-root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255,255,255,0.10);
+    --series-1: #3987e5;
+    --series-2: #d95926;
+  }
+}
+:root[data-theme="dark"] .viz-root {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface-1: #1a1a19;
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --border: rgba(255,255,255,0.10);
+  --series-1: #3987e5;
+  --series-2: #d95926;
+}
+html, body { margin: 0; }
+body.viz-root { background: var(--page); color: var(--text-primary);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif; }
+.card { max-width: 860px; margin: 24px auto; background: var(--surface-1);
+  border: 1px solid var(--border); border-radius: 12px; padding: 24px 24px 16px; }
+h1 { font-size: 20px; line-height: 1.4; margin: 0 0 6px; font-weight: 700; }
+.sub { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0 0 16px; }
+.legend { display: flex; gap: 20px; font-size: 13px; color: var(--text-secondary); margin: 0 0 8px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+.tick { fill: var(--text-muted); font-size: 11px; }
+.cat { fill: var(--text-primary); font-size: 13px; }
+.val { fill: var(--text-secondary); font-size: 11px; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+.base { stroke: var(--axis); stroke-width: 1; }
+.hit { fill: transparent; cursor: default; }
+.hit:focus { outline: none; }
+.row:hover .bar, .row:focus-within .bar { opacity: 1; }
+.dim .bar { opacity: 0.35; }
+#tip { position: fixed; pointer-events: none; background: var(--surface-1); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12); opacity: 0; transition: opacity .08s; max-width: 260px; }
+#tip b { font-weight: 600; }
+.note { font-size: 12px; color: var(--text-muted); margin: 12px 0 0; line-height: 1.6; }
+details { margin-top: 12px; font-size: 13px; color: var(--text-secondary); }
+table { border-collapse: collapse; margin-top: 8px; width: 100%; }
+th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--grid); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body class="viz-root">
+<div class="card">
+  <h1>전포 리뷰는 '영업시간'을, 서면젊음의거리 리뷰는 '사람·붐빔'과 '청결·안전'을 상대보다 훨씬 자주 말했다</h1>
+  <p class="sub">태그별 리뷰 건수 · 분모: 글 있는 리뷰 중 노이즈(짧은 평가·특정 가게 한 곳 후기·장소와 무관한 글)를 뺀 전포카페거리 80건, 서면젊음의거리 69건 · 기간: 등록일 표시 전포 "15시간 전"~"1년 전", 서면젊음의거리 "1주 전"~"7년 전" · 출처: Google 지도 최신순 리뷰 요약(전포 카페거리, 서면젊음의거리), 모은 날 2026-11-18 · 태그 기준 review-codebook.md (한 리뷰에 여러 태그 가능)</p>
+  <div class="legend" aria-hidden="true">
+    <span><i class="swatch" style="background:var(--series-1)"></i>전포카페거리 (80건)</span>
+    <span><i class="swatch" style="background:var(--series-2)"></i>서면젊음의거리 (69건)</span>
+  </div>
+  <svg id="chart" role="img" aria-label="태그별 리뷰 건수 가로 막대 차트. 아래 표에 같은 값이 있습니다."></svg>
+  <p class="note">막대 끝 숫자는 리뷰 건수입니다. 막대에 마우스를 올리면 분모 대비 비율이 나옵니다. 두 장소의 분모(80건, 69건)가 달라서 건수를 비교할 때 비율도 함께 봅니다.</p>
+  <details>
+    <summary>표로 보기</summary>
+    <table id="tbl"><thead><tr><th>태그</th><th class="n">전포 (÷80)</th><th class="n">서면젊음의거리 (÷69)</th></tr></thead><tbody></tbody></table>
+  </details>
+</div>
+<div id="tip" role="status" aria-live="polite"></div>
+<script>
+(function () {
+  var N = { j: 80, s: 69 };
+  var data = [
+    { tag: '가게 구성',   j: 38, s: 38 },
+    { tag: '사람·붐빔',   j: 16, s: 35 },
+    { tag: '분위기·경관', j: 21, s: 9 },
+    { tag: '평판·비교',   j: 15, s: 12 },
+    { tag: '접근·이동',   j: 14, s: 6 },
+    { tag: '영업시간',    j: 12, s: 3 },
+    { tag: '청결·안전',   j: 2,  s: 12 },
+    { tag: '음식·음료',   j: 6,  s: 0 }
+  ];
+  var series = [
+    { key: 'j', name: '전포카페거리', color: 'var(--series-1)' },
+    { key: 's', name: '서면젊음의거리', color: 'var(--series-2)' }
+  ];
+  var W = 800, left = 110, right = 40, top = 8, barH = 14, gap = 2, band = 46, axisH = 24;
+  var H = top + data.length * band + axisH;
+  var max = 40, plotW = W - left - right;
+  var x = function (v) { return left + (v / max) * plotW; };
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('chart');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e); return e;
+  }
+  for (var t = 0; t <= max; t += 10) {
+    el('line', { x1: x(t), x2: x(t), y1: top, y2: top + data.length * band, 'class': t === 0 ? 'base' : 'grid' });
+    var lab = el('text', { x: x(t), y: top + data.length * band + 16, 'text-anchor': 'middle', 'class': 'tick' });
+    lab.textContent = t + '건';
+  }
+  function barPath(x0, y, w, h, r) {
+    if (w <= 0) return '';
+    r = Math.min(r, w, h / 2);
+    return 'M' + x0 + ',' + y + 'H' + (x0 + w - r) + 'Q' + (x0 + w) + ',' + y + ' ' + (x0 + w) + ',' + (y + r) +
+      'V' + (y + h - r) + 'Q' + (x0 + w) + ',' + (y + h) + ' ' + (x0 + w - r) + ',' + (y + h) + 'H' + x0 + 'Z';
+  }
+  var tip = document.getElementById('tip');
+  function show(ev, d) {
+    tip.innerHTML = '<b>' + d.tag + '</b><br>' + series.map(function (s) {
+      var v = d[s.key]; return '<span class="swatch" style="background:' + s.color + ';width:8px;height:8px;margin-right:6px"></span>' +
+        s.name + ': ' + v + '건 / ' + N[s.key] + '건 (' + (v / N[s.key] * 100).toFixed(1) + '%)';
+    }).join('<br>');
+    tip.style.opacity = 1; move(ev);
+  }
+  function move(ev) {
+    var px = ev.clientX, py = ev.clientY;
+    if (px === undefined) { var r = ev.target.getBoundingClientRect(); px = r.left + r.width / 2; py = r.top; }
+    tip.style.left = Math.min(px + 14, window.innerWidth - 280) + 'px';
+    tip.style.top = (py + 14) + 'px';
+  }
+  function hide() { tip.style.opacity = 0; }
+  data.forEach(function (d, i) {
+    var y0 = top + i * band + (band - (barH * 2 + gap)) / 2;
+    var g = el('g', { 'class': 'row' });
+    var c = el('text', { x: left - 10, y: y0 + barH + 1, 'text-anchor': 'end', 'dominant-baseline': 'middle', 'class': 'cat' }, g);
+    c.textContent = d.tag;
+    series.forEach(function (s, k) {
+      var y = y0 + k * (barH + gap), v = d[s.key];
+      if (v > 0) el('path', { d: barPath(x(0), y, x(v) - x(0), barH, 4), fill: s.color, 'class': 'bar' }, g);
+      var vt = el('text', { x: x(v) + 6, y: y + barH / 2, 'dominant-baseline': 'middle', 'class': 'val' }, g);
+      vt.textContent = v;
+    });
+    var hit = el('rect', { x: 0, y: top + i * band, width: W, height: band, 'class': 'hit', tabindex: 0,
+      'aria-label': d.tag + ': 전포 80건 중 ' + d.j + '건, 서면젊음의거리 69건 중 ' + d.s + '건' }, g);
+    hit.addEventListener('mouseenter', function (ev) { show(ev, d); });
+    hit.addEventListener('mousemove', move);
+    hit.addEventListener('mouseleave', hide);
+    hit.addEventListener('focus', function (ev) { show(ev, d); });
+    hit.addEventListener('blur', hide);
+  });
+  var tb = document.querySelector('#tbl tbody');
+  data.forEach(function (d) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + d.tag + '</td><td class="n">' + d.j + ' (' + (d.j / 80 * 100).toFixed(1) + '%)</td><td class="n">' +
+      d.s + ' (' + (d.s / 69 * 100).toFixed(1) + '%)</td>';
+    tb.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>
