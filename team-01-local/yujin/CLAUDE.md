@@ -30,3 +30,12 @@
 - 노트에는 확인한 날짜(YYYY-MM-DD)를 적습니다.
 - `inputs/` 숫자는 파일 값 그대로 쓰고 반올림하지 않는다.
 - 두 출처의 숫자가 다르면 둘 다 적고 어느 쪽인지 고르지 않는다.
+
+## 5. 폴더 규칙
+
+- 프롬프트에 폴더 없이 파일 이름만 있으면 맨 위(yujin/)에 저장한다.
+- 리서치 노트는 `research/`에 `YYYY-MM-DD-주제.md`로 저장한다. 오래된 사본은 `research/archive/`로 옮긴다.
+- 분석·보고서는 `report/`, 데이터 설명서(SOURCE*, data-spec)는 `sources/`, 틀은 `templates/`, 체크표는 `checklists/`에 둔다.
+- `inputs/`(강사 제공)와 `inputs-team/`(팀 데이터)의 파일은 고치지도 옮기지도 않는다.
+- CLAUDE.md, keyword-map.md, README.md는 맨 위에 둔다.
+- 파일을 옮기면 `refactor-log.md`에 '원래 자리 → 새 자리'로 한 줄씩 적는다.
