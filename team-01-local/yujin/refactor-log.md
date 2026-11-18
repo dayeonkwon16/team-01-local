@@ -35,3 +35,8 @@
 - 03-video-transcript.md → prompts/03-video-transcript.md
 - 영상 요약 노트를 팀과 나누려고 깃허브에 올라가지 않는 `raw/`에서 `report/`로 옮겼습니다(조유진 결정). 닉네임 등 개인 정보는 없습니다. 자막 원본은 `raw/video/`에 그대로 둡니다.
 - raw/video/Jeonpo-cafe-note.md → report/Jeonpo-cafe-note.md
+
+## 2026-11-18 안내서 1개 옮김
+
+- 맨 위에 새로 들어온 5일차 3교시 강의 프롬프트 안내서를 `prompts/`로 옮겼습니다(01~03 안내서와 같은 자리). 내용과 이름은 그대로입니다.
+- 04-collect-image.md → prompts/04-collect-image.md
