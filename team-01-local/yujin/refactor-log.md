@@ -15,3 +15,9 @@
 - research/_note-template.md → templates/_note-template.md
 - research/_check.md → checklists/_check.md
 - research/2026-11-17-서면1번가-상권활성화사업-검증.md → research/archive/2026-11-17-서면1번가-상권활성화사업-검증.md
+
+## 2026-11-18 추가로 옮긴 것
+
+- 맨 위에 새로 들어온 강의 프롬프트 안내서 2개를 `prompts/`로 옮겼습니다(팀원 폴더도 같은 파일을 prompts/에 둠). 내용과 이름은 그대로입니다. 파일 개수 430개 → 430개(같음).
+- 10-team-report.md → prompts/10-team-report.md
+- 11-team-fieldwork-plan.md → prompts/11-team-fieldwork-plan.md
