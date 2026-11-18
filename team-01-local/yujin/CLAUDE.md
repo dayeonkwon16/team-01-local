@@ -36,6 +36,7 @@
 - 프롬프트에 폴더 없이 파일 이름만 있으면 맨 위(yujin/)에 저장한다.
 - 리서치 노트는 `research/`에 `YYYY-MM-DD-주제.md`로 저장한다. 오래된 사본은 `research/archive/`로 옮긴다.
 - 분석·보고서는 `report/`, 데이터 설명서(SOURCE*, data-spec)는 `sources/`, 틀은 `templates/`, 체크표는 `checklists/`에 둔다.
+- 영상 자막은 `transcripts/`에 저장한다. 파일 맨 위에 출처 한 줄을 적고, 자막 글자는 고치지 않는다.
 - `inputs/`(강사 제공)와 `inputs-team/`(팀 데이터)의 파일은 고치지도 옮기지도 않는다.
 - CLAUDE.md, keyword-map.md, README.md는 맨 위에 둔다.
 - 파일을 옮기면 `refactor-log.md`에 '원래 자리 → 새 자리'로 한 줄씩 적는다.
