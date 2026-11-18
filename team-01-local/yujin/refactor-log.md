@@ -26,3 +26,12 @@
 
 - 영상 자막 자리를 `transcripts/`에서 `raw/video/`로 바꿨습니다(조유진 결정). `raw/`는 깃허브에 올라가지 않아 이 파일은 내 PC에만 남습니다. 빈 `transcripts/` 폴더는 지웠습니다.
 - transcripts/seomyeon-Ens.txt → raw/video/seomyeon-Ens.txt
+
+## 2026-11-18 안내서 3개와 영상 노트 옮김
+
+- 맨 위에 새로 들어온 5일차 강의 프롬프트 안내서 3개를 `prompts/`로 옮겼습니다. 내용과 이름은 그대로입니다.
+- 01-collect-plan.md → prompts/01-collect-plan.md
+- 02-collect-text.md → prompts/02-collect-text.md
+- 03-video-transcript.md → prompts/03-video-transcript.md
+- 영상 요약 노트를 팀과 나누려고 깃허브에 올라가지 않는 `raw/`에서 `report/`로 옮겼습니다(조유진 결정). 닉네임 등 개인 정보는 없습니다. 자막 원본은 `raw/video/`에 그대로 둡니다.
+- raw/video/Jeonpo-cafe-note.md → report/Jeonpo-cafe-note.md
